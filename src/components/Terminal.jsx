@@ -14,30 +14,55 @@ export default function Terminal() {
   const commands = {
     help: () => [
       "Available commands:",
-      "about, skills, projects, articles, clear"
+      "about, skills, projects, articles, article [slug], clear"
     ],
+
     about: () => [`${about.name} - ${about.title}`, about.description],
+
     skills: () => [...skills.languages, ...skills.tools],
-    projects: () =>
-      projects.map(p => `${p.name}: ${p.description} [${p.link}]`),
-    clear: () => [],
+
+    projects: () => projects.map(p => `${p.name}: ${p.description} [${p.link}]`),
+
     articles: async () => {
-      const res = await fetch('/src/content/articles/article1.md');
-      const text = await res.text();
-      return marked.parse(text).split('\n').filter(line => line.trim() !== '');
-    }
+      try {
+        const res = await fetch('public/articles/index.json');
+        if (!res.ok) throw new Error("Missing index.json");
+        const list = await res.json();
+        return ["Available articles:"].concat(
+          list.map(a => `- ${a.slug}  (${a.title})`)
+        );
+      } catch (err) {
+        return [`Error: Unable to load articles list.`];
+      }
+    },
+
+    article: async (slug) => {
+      if (!slug) return ["Usage: article [slug]"];
+      try {
+        const res = await fetch(`public/articles/${slug}.md`);
+        if (!res.ok) throw new Error("Not found");
+        const text = await res.text();
+        return marked.parse(text).split('\n').filter(l => l.trim() !== '');
+      } catch {
+        return [`Article '${slug}' not found.`];
+      }
+    },
+
+    clear: () => []
   };
+
 
   const handleCommand = async () => {
     const cmd = input.trim();
+    const [command, ...args] = cmd.split(" ");
 
-    if (cmd === 'clear') {
+    if (command === 'clear') {
       setLines([]);
-    } else if (commands[cmd]) {
-      const result = await commands[cmd]();
+    } else if (commands[command]) {
+      const result = await commands[command](...args);
       setLines(prev => [...prev, `> ${cmd}`, ...(result || [])]);
     } else {
-      setLines(prev => [...prev, `> ${cmd}`, `Command not found: ${cmd}`]);
+      setLines(prev => [...prev, `> ${cmd}`, `Command not found: ${command}`]);
     }
 
     setInput('');
