@@ -6,7 +6,7 @@ import { marked } from 'marked';
 
 export default function Terminal() {
   const [lines, setLines] = useState([
-    "Welcome to <your_usernanme>'s portfolio!",
+    "Welcome to [your_usernanme]'s portfolio!",
     "Type 'help' to see available commands."
   ]);
   const [input, setInput] = useState('');
