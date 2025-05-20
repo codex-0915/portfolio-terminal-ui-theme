@@ -1,0 +1,3 @@
+# Article 2
+
+In this article, I walk through simplifying stuffs in ...
