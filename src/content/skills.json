@@ -1,0 +1,5 @@
+{
+  "languages": ["Python", "Ruby", "Bash", "JavaScript", "C", "PHP"],
+  "tools": ["GitLab CI/CD", "Jenkins", "Docker", "Kubernetes", "AWS", "Terraform"],
+  "web-framework": ["Rails", "React", "ExpressJS (Node.js)", "Laravel"]
+}

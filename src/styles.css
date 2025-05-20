@@ -1,0 +1,20 @@
+body {
+  background-color: black;
+  color: #00ff00;
+  font-family: monospace;
+  margin: 0;
+  padding: 2rem;
+}
+
+input {
+  background: transparent;
+  color: #00ff00;
+  border: none;
+  outline: none;
+  font: inherit;
+  width: 90%;
+}
+
+.terminal {
+  max-width: 800px;
+}
